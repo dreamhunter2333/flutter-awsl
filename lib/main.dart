@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
@@ -11,43 +13,61 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Startup Name Generator',
-      home: RandomWords(),
+    return MaterialApp(
+      title: 'Awsl',
+      darkTheme: ThemeData.dark(),
+      home: const Awsl(),
     );
   }
 }
 
-class RandomWords extends StatefulWidget {
-  const RandomWords({Key? key}) : super(key: key);
+class Awsl extends StatefulWidget {
+  static const title = 'Awsl';
+
+  const Awsl({Key? key}) : super(key: key);
 
   @override
-  _RandomWordsState createState() => _RandomWordsState();
+  _AwslState createState() => _AwslState();
 }
 
-class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18.0);
+class _AwslState extends State<Awsl> {
+  static const _itemsLength = 50;
 
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return const Divider(); /*2*/
+  final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
 
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
+  late List<MaterialColor> colors;
+  late List<String> songNames;
+
+  @override
+  void initState() {
+    _setData();
+    super.initState();
   }
 
-  Widget _buildRow(WordPair pair) {
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
+  void _setData() {
+    final wordPair = WordPair.random();
+    colors = [Colors.yellow];
+    songNames = [wordPair.asPascalCase];
+  }
+
+  Future<void> _refreshData() {
+    return Future.delayed(
+      // This is just an arbitrary delay that simulates some network activity.
+      const Duration(seconds: 2),
+      () => setState(() => _setData()),
+    );
+  }
+
+  Widget _listBuilder(BuildContext context, int index) {
+    if (index >= _itemsLength) return Container();
+    final wordPair = WordPair.random();
+
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: Hero(
+        tag: index,
+        child: Text(wordPair.asPascalCase),
       ),
     );
   }
@@ -56,9 +76,24 @@ class _RandomWordsState extends State<RandomWords> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Startup Name Generator'),
+        title: const Text(Awsl.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () async =>
+                await _androidRefreshKey.currentState!.show(),
+          ),
+        ],
       ),
-      body: _buildSuggestions(),
+      body: RefreshIndicator(
+        key: _androidRefreshKey,
+        onRefresh: _refreshData,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          itemCount: _itemsLength,
+          itemBuilder: _listBuilder,
+        ),
+      ),
     );
   }
 }
