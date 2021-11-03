@@ -30,8 +30,12 @@ class Awsl extends StatefulWidget {
 
 class _AwslState extends State<Awsl> {
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
-  late final List<String> _awslData = <String>[];
-  late int _awslCount = 0;
+
+  final _data = <String>[];
+  int _count = 0;
+
+  final countPerPage = 10;
+  var _isFetching = false;
 
   @override
   void initState() {
@@ -39,64 +43,61 @@ class _AwslState extends State<Awsl> {
     super.initState();
   }
 
-  void _initData() {
-    _awslData.clear();
-    fetchCount();
-    fetchData(10, 0);
+  void _initData() async {
+    _isFetching = true;
+    _data.clear();
+    final countFuture = fetchCount().then((value) => _count = value);
+    final dataFuture = fetchData(countPerPage, 0).then((value) => _data.addAll(value));
+    final futures = [countFuture, dataFuture];
+    await Future.wait(futures);
+    setState(() { });
+    _isFetching = false;
   }
 
-  convertData(List urlList) {
-    for (var url in urlList) {
-      _awslData.add(url["pic_info"]["large"]["url"]);
+  Future fetchNextPage() async {
+    if (_isFetching) return;
+    _isFetching = true;
+    final offset = _data.length;
+    final result = await fetchData(countPerPage, offset);
+    _data.addAll(result);
+    setState(() {});
+    _isFetching = false;
+  }
+
+  Future<List<String>> fetchData(limit, offset) async {
+    final url = "http://awsl-py.dev.jcstaff.club/list?limit=$limit&offset=$offset";
+    final response = await http.get(Uri.parse(url), headers: {'Content-Type': 'application/json; charset=UTF-8'});
+    final urlList = json.decode(response.body);
+    final result = <String>[];
+    for (final url in urlList) {
+      result.add(url["pic_info"]["large"]["url"]);
     }
+    return result;
   }
 
-  fetchData(limit, offset) {
-    var url = Uri.parse("http://awsl-py.dev.jcstaff.club/list?limit=" +
-        limit.toString() +
-        "&offset=" +
-        offset.toString());
-    http
-        .get(url, headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        })
-        .then((value) => {
-              for (var url in json.decode(value.body))
-                {_awslData.add(url["pic_info"]["large"]["url"])}
-            })
-        .whenComplete(() => setState(() => {}));
-  }
-
-  fetchCount() {
-    http
-        .get(Uri.parse("http://awsl-py.dev.jcstaff.club/list_count"))
-        .then((value) => _awslCount = int.parse(value.body))
-        .whenComplete(() => setState(() => {}));
+  Future<int> fetchCount() async {
+    final response = await http.get(Uri.parse("http://awsl-py.dev.jcstaff.club/list_count"));
+    return int.parse(response.body);
   }
 
   Widget _buildListView() {
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: _awslCount,
+        itemCount: _count,
         itemBuilder: /*1*/ (context, i) {
           if (i.isOdd) return const Divider(); /*2*/
 
           final index = i ~/ 2; /*3*/
-          if (index >= _awslData.length - 10 &&
-              _awslData.length <= _awslCount) {
-            fetchData(10, index);
+          if (index >= _data.length - countPerPage && _data.length <= _count) {
+            fetchNextPage();
           }
-          if (index >= _awslData.length) return Container();
-          return Image.network(_awslData[index]);
+          if (index >= _data.length) return Container();
+          return Image.network(_data[index]);
         });
   }
 
-  Future<void> _refreshData() {
-    return Future.delayed(
-      // This is just an arbitrary delay that simulates some network activity.
-      const Duration(seconds: 2),
-      () => setState(() => _initData()),
-    );
+  Future _refreshData() async {
+    return _initData();
   }
 
   @override
