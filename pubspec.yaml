@@ -13,6 +13,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   english_words: ^4.0.0
   http: ^0.13.4
+  transparent_image: ^2.0.0
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:
