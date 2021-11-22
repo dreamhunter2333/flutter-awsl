@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:extended_image/extended_image.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const baseUrl = "http://awsl-py.dev.jcstaff.club";
 
 void main() {
   runApp(const MyApp());
+}
+
+class Pair<T1, T2> {
+  final T1 t1;
+  final T2 t2;
+
+  Pair(this.t1, this.t2);
 }
 
 class MyApp extends StatelessWidget {
@@ -33,19 +44,27 @@ class Awsl extends StatefulWidget {
 class _AwslState extends State<Awsl> {
   final _androidRefreshKey = GlobalKey<RefreshIndicatorState>();
 
-  final _data = <String>[];
+  final List<Pair<String, String>> _data = [];
   int _count = 0;
 
+  // 当页码
+  var curIndex = 0;
+  // wb user id
+  var producer = "";
+  // wb user list
+  late List<Pair<String, String>> producerList = [];
   final countPerPage = 10;
   var _isFetching = false;
+  final PageController _controller = PageController(initialPage: 0);
 
   @override
   void initState() {
+    fetchProducers();
     _initData();
     super.initState();
   }
 
-  void _initData() async {
+  Future _initData() async {
     _isFetching = true;
     _data.clear();
     final countFuture = fetchCount().then((value) => _count = value);
@@ -58,6 +77,7 @@ class _AwslState extends State<Awsl> {
   }
 
   Future fetchNextPage(index) async {
+    curIndex = index;
     if (_isFetching) return;
     if (_data.length >= _count || index + 3 < _data.length) return;
     _isFetching = true;
@@ -68,33 +88,76 @@ class _AwslState extends State<Awsl> {
     _isFetching = false;
   }
 
-  Future<List<String>> fetchData(limit, offset) async {
-    final url =
-        "http://awsl-py.dev.jcstaff.club/list?limit=$limit&offset=$offset";
+  Future fetchProducers() async {
+    final response = await http.get(Uri.parse(baseUrl + "/producers"));
+    Utf8Decoder utf8decoder = const Utf8Decoder();
+    String responseString = utf8decoder.convert(response.bodyBytes);
+    final res = json.decode(responseString);
+    producerList = List.generate(
+        res.length, (index) => Pair(res[index]["uid"], res[index]["name"]));
+    producer = producerList.isNotEmpty ? producerList[0].t1 : "";
+  }
+
+  Future<List<Pair<String, String>>> fetchData(limit, offset) async {
+    var url = baseUrl + "/list?limit=$limit&offset=$offset";
+    if (producer.isNotEmpty) url += "&uid=$producer";
     final response = await http.get(Uri.parse(url),
         headers: {'Content-Type': 'application/json; charset=UTF-8'});
     final urlList = json.decode(response.body);
-    final result = <String>[];
-    for (final url in urlList) {
-      result.add(url["pic_info"]["large"]["url"]);
-    }
-    return result;
+    return List.generate(
+        urlList.length,
+        (index) => Pair(urlList[index]["pic_info"]["large"]["url"],
+            urlList[index]["wb_url"]));
   }
 
   Future<int> fetchCount() async {
-    final response =
-        await http.get(Uri.parse("http://awsl-py.dev.jcstaff.club/list_count"));
+    var url = baseUrl + "/list_count";
+    if (producer.isNotEmpty) url += "?uid=$producer";
+    final response = await http.get(Uri.parse(url));
     return int.parse(response.body);
   }
 
-  Future _refreshData() async {
-    print("_refreshData");
-    return _initData();
+  Future<void> changeLanguage() async {
+    List<SimpleDialogOption> children = List.generate(
+        producerList.length,
+        (index) => SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, producerList[index].t1);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Text(producerList[index].t2),
+              ),
+            ));
+    String? uid = await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: const Text('请选择来源'),
+            children: children,
+          );
+        });
+
+    if (uid != null) {
+      producer = uid;
+      _initData();
+    }
   }
 
-  void _like() async {
+  Future _refreshData() async {
+    await _initData();
+    _controller.jumpToPage(0);
+  }
+
+  void _up() {
+    _controller.jumpToPage(0);
+  }
+
+  Future _save() async {
+    var data = await getNetworkImageData(_data[curIndex].t1, useCache: true);
+    var filePath = await ImageGallerySaver.saveImage(data!);
     await Fluttertoast.showToast(
-        msg: " 暂不支持点赞，敬请期待",
+        msg: "已保存到: " + filePath.toString(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -103,17 +166,20 @@ class _AwslState extends State<Awsl> {
         fontSize: 16.0);
   }
 
+  Future _open() async {
+    if (!await launch(_data[curIndex].t2)) {
+      throw 'Could not launch $_data[curIndex].t2';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var children = <Widget>[];
-    // 生成所有页
-    for (int i = 0; i < _data.length; i++) {
-      children.add(Page(index: "$i/$_count", url: _data[i]));
-    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(Awsl.title),
         actions: [
+          IconButton(
+              icon: const Icon(Icons.settings), onPressed: changeLanguage),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () async =>
@@ -124,49 +190,42 @@ class _AwslState extends State<Awsl> {
       body: RefreshIndicator(
         key: _androidRefreshKey,
         onRefresh: _refreshData,
-        child: PageView(
-          scrollDirection: Axis.vertical, // 滑动方向为垂直方向
-          children: children,
+        child: ExtendedImageGesturePageView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            var item = _data[index].t1;
+            Widget image = ExtendedImage.network(item,
+                fit: BoxFit.contain, mode: ExtendedImageMode.gesture);
+            image = Container(
+              child: image,
+              padding: const EdgeInsets.all(5.0),
+            );
+            return image;
+          },
+          itemCount: _data.length,
           onPageChanged: fetchNextPage,
+          controller: _controller,
+          scrollDirection: Axis.vertical,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: _like,
-          tooltip: 'Like',
-          child: const Icon(Icons.favorite, color: Colors.pink),
-          backgroundColor: Colors.pink.shade50),
-    );
-  }
-}
-
-// Tab 页面
-class Page extends StatefulWidget {
-  const Page({Key? key, required this.index, required this.url})
-      : super(key: key);
-
-  final String index;
-  final String url;
-
-  @override
-  _PageState createState() => _PageState();
-}
-
-class _PageState extends State<Page> {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      fit: StackFit.expand, //未定位widget占满Stack整个空间
-      children: <Widget>[
-        FadeInImage.memoryNetwork(
-          placeholder: kTransparentImage,
-          image: widget.url,
-        ),
-        Positioned(
-          top: 18.0,
-          child: Text(widget.index, textScaleFactor: 1.5),
-        )
-      ],
+      floatingActionButton: Column(mainAxisSize: MainAxisSize.min, children: [
+        FloatingActionButton(
+            onPressed: _up,
+            tooltip: 'Up',
+            child: const Icon(Icons.arrow_upward, color: Colors.pink),
+            backgroundColor: Colors.pink.shade50),
+        const SizedBox(height: 10),
+        FloatingActionButton(
+            onPressed: _save,
+            tooltip: 'Save',
+            child: const Icon(Icons.save, color: Colors.pink),
+            backgroundColor: Colors.pink.shade50),
+        const SizedBox(height: 10),
+        FloatingActionButton(
+            onPressed: _open,
+            tooltip: 'open',
+            child: const Icon(Icons.open_in_browser, color: Colors.pink),
+            backgroundColor: Colors.pink.shade50)
+      ]),
     );
   }
 }

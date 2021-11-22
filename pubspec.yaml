@@ -13,8 +13,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   english_words: ^4.0.0
   http: ^0.13.4
-  transparent_image: ^2.0.0
   fluttertoast: ^8.0.8
+  extended_image: ^4.0.0
+  image_gallery_saver: '^1.7.1'
+  url_launcher: ^6.0.15
 
 dev_dependencies:
   flutter_test:
