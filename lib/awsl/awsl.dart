@@ -124,14 +124,14 @@ class _AwslState extends State<Awsl> {
 
     if (uid != null) {
       producer = uid;
-      _initData();
+      await _initData();
+      _up();
     }
   }
 
   Future _refreshData() async {
     await _initData();
-    _controller.animateToPage(0,
-        duration: const Duration(milliseconds: 200), curve: Curves.bounceInOut);
+    _up();
   }
 
   void _autoPlay() async {
@@ -142,11 +142,9 @@ class _AwslState extends State<Awsl> {
           value.cancel();
           return;
         }
-        curIndex++;
-        _controller.animateToPage(curIndex,
+        _controller.animateToPage(curIndex + 1,
             duration: const Duration(milliseconds: 200),
             curve: Curves.bounceInOut);
-        await fetchNextPage(curIndex);
         setState(() {});
       });
     }
