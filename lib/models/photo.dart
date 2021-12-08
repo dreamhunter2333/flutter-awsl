@@ -12,7 +12,6 @@ class Photo{
   @JsonKey(name: 'pic_info')
   late PhotoInfo picInfo;
 
-
   factory Photo.fromJson(Map<String, dynamic> json) => _$PhotoFromJson(json);
   Map<String, dynamic> toJson() => _$PhotoToJson(this);
 }
