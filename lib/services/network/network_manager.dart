@@ -35,6 +35,10 @@ class NetworkManager{
       dynamic json = response.data;
       if(response.statusCode == 200 || response.statusCode == 201){
 
+        if(json is! Map){
+          json = {'results' : json };
+        }
+
         return json as Map<String, dynamic>;
       }
 
