@@ -1,3 +1,4 @@
+import 'package:awsl/models/producer.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class PhotoListEvent extends Equatable{
@@ -8,9 +9,9 @@ abstract class PhotoListEvent extends Equatable{
 }
 
 class PhotoListProducerUidChanged extends PhotoListEvent{
-  const PhotoListProducerUidChanged({required this.producerUid});
+  const PhotoListProducerUidChanged({required this.producer});
 
-  final String producerUid;
+  final Producer producer;
 
   @override
   List<Object?> get props => [super.props];

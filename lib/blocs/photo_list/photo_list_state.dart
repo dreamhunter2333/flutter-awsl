@@ -5,15 +5,15 @@ import 'package:equatable/equatable.dart';
 class PhotoListState extends Equatable{
   const PhotoListState({
     required this.producer,
-    required this.nextLoadPage,
-    required this.currentPhotos
+    required this.currentPhotos,
+    required this.nextLoadPage
   });
 
   List<Photo> get photos => currentPhotos ?? [];
   final List<Photo>? currentPhotos;
 
-  final int? nextLoadPage;
   final Producer? producer;
+  final int nextLoadPage;
 
   @override
   List<Object?> get props => [];
@@ -22,9 +22,9 @@ class PhotoListState extends Equatable{
 class PhotoListStateInitial extends PhotoListState{
   const PhotoListStateInitial({
     Producer? producer,
-    int? nextLoadPage,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos
+    List<Photo>? emptyPhotos,
+    int nextLoadPage = 0
   }): super(
     producer: producer,
     nextLoadPage: nextLoadPage,
@@ -38,9 +38,9 @@ class PhotoListStateInitial extends PhotoListState{
 class PhotoListStateLoadMoreInProgress extends PhotoListState {
   const PhotoListStateLoadMoreInProgress({
     Producer? producer,
-    int? nextLoadPage,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos
+    List<Photo>? emptyPhotos,
+    int nextLoadPage = 0
   }): super(
       producer: producer,
       nextLoadPage: nextLoadPage,
@@ -50,9 +50,9 @@ class PhotoListStateLoadMoreInProgress extends PhotoListState {
   PhotoListStateLoadMoreInProgress.fromState(PhotoListState state,
       {
         Producer? producer,
-        int? nextLoadPage,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos
+        List<Photo>? emptyPhotos,
+        int nextLoadPage = 0
       })
       : this(
       producer: state.producer,
@@ -67,9 +67,9 @@ class PhotoListStateLoadMoreInProgress extends PhotoListState {
 class PhotoListStateReloadInProgress extends PhotoListState {
   const PhotoListStateReloadInProgress({
     Producer? producer,
-    int? nextLoadPage,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos
+    List<Photo>? emptyPhotos,
+    int nextLoadPage = 0
   }): super(
       producer: producer,
       nextLoadPage: nextLoadPage,
@@ -79,9 +79,9 @@ class PhotoListStateReloadInProgress extends PhotoListState {
   PhotoListStateReloadInProgress.fromState(PhotoListState state,
       {
         Producer? producer,
-        int? nextLoadPage,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos
+        List<Photo>? emptyPhotos,
+        int nextLoadPage = 0
       })
       : this(
       producer: state.producer,
@@ -96,9 +96,9 @@ class PhotoListStateReloadInProgress extends PhotoListState {
 class PhotoListStateLoadSuccess extends PhotoListState {
   const PhotoListStateLoadSuccess({
     Producer? producer,
-    int? nextLoadPage,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos
+    List<Photo>? emptyPhotos,
+    int nextLoadPage = 0
   }): super(
       producer: producer,
       nextLoadPage: nextLoadPage,
@@ -108,9 +108,9 @@ class PhotoListStateLoadSuccess extends PhotoListState {
   PhotoListStateLoadSuccess.fromState(PhotoListState state,
       {
         Producer? producer,
-        int? nextLoadPage,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos
+        List<Photo>? emptyPhotos,
+        int nextLoadPage = 0
       })
       : this(
       producer: state.producer,
@@ -125,9 +125,9 @@ class PhotoListStateLoadSuccess extends PhotoListState {
 class PhotoListStateLoadFailure extends PhotoListState {
   const PhotoListStateLoadFailure({
     Producer? producer,
-    int? nextLoadPage,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos
+    List<Photo>? emptyPhotos,
+    int nextLoadPage = 0
   }): super(
       producer: producer,
       nextLoadPage: nextLoadPage,
@@ -137,9 +137,9 @@ class PhotoListStateLoadFailure extends PhotoListState {
   PhotoListStateLoadFailure.fromState(PhotoListState state,
       {
         Producer? producer,
-        int? nextLoadPage,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos
+        List<Photo>? emptyPhotos,
+        int nextLoadPage = 0
       })
       : this(
       producer: state.producer,
