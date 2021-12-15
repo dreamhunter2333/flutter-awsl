@@ -7,11 +7,11 @@ part of 'photo_link.dart';
 // **************************************************************************
 
 PhotoLink _$PhotoLinkFromJson(Map<String, dynamic> json) => PhotoLink()
-  ..url = json['url'] as String
-  ..width = json['width'] as int
-  ..height = json['height'] as int
-  ..cutType = json['cut_type'] as String
-  ..type = json['type'] as String;
+  ..url = json['url'] as String?
+  ..width = json['width'] as int?
+  ..height = json['height'] as int?
+  ..cutType = json['cut_type'] as String?
+  ..type = json['type'] as String?;
 
 Map<String, dynamic> _$PhotoLinkToJson(PhotoLink instance) => <String, dynamic>{
       'url': instance.url,

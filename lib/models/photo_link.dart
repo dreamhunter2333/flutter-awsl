@@ -6,12 +6,12 @@ part 'photo_link.g.dart';
 class PhotoLink{
   PhotoLink();
 
-  late String url;
-  late int width;
-  late int height;
+  late String? url;
+  late int? width;
+  late int? height;
   @JsonKey(name: 'cut_type')
-  late String cutType;
-  late String type;
+  late String? cutType;
+  late String? type;
 
   factory PhotoLink.fromJson(Map<String, dynamic> json) => _$PhotoLinkFromJson(json);
   Map<String, dynamic> toJson() => _$PhotoLinkToJson(this);

@@ -7,10 +7,10 @@ part of 'focus_point.dart';
 // **************************************************************************
 
 FocusPoint _$FocusPointFromJson(Map<String, dynamic> json) => FocusPoint()
-  ..left = (json['left'] as num).toDouble()
-  ..top = (json['top'] as num).toDouble()
-  ..width = (json['width'] as num).toDouble()
-  ..height = (json['height'] as num).toDouble();
+  ..left = (json['left'] as num?)?.toDouble()
+  ..top = (json['top'] as num?)?.toDouble()
+  ..width = (json['width'] as num?)?.toDouble()
+  ..height = (json['height'] as num?)?.toDouble();
 
 Map<String, dynamic> _$FocusPointToJson(FocusPoint instance) =>
     <String, dynamic>{
