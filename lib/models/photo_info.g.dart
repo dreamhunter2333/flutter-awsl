@@ -25,10 +25,10 @@ PhotoInfo _$PhotoInfoFromJson(Map<String, dynamic> json) => PhotoInfo()
   ..mw2000 = json['mw2000'] == null
       ? null
       : PhotoLink.fromJson(json['mw2000'] as Map<String, dynamic>)
+  ..type = json['type'] as String?
   ..objectId = json['object_id'] as String?
   ..photoId = json['photo_id'] as String?
   ..photoTag = json['photo_tag'] as int?
-  ..type = json['type'] as String?
   ..picStatus = json['pic_status'] as int?;
 
 Map<String, dynamic> _$PhotoInfoToJson(PhotoInfo instance) => <String, dynamic>{
@@ -38,9 +38,9 @@ Map<String, dynamic> _$PhotoInfoToJson(PhotoInfo instance) => <String, dynamic>{
       'original': instance.original,
       'largest': instance.largest,
       'mw2000': instance.mw2000,
+      'type': instance.type,
       'object_id': instance.objectId,
       'photo_id': instance.photoId,
       'photo_tag': instance.photoTag,
-      'type': instance.type,
       'pic_status': instance.picStatus,
     };

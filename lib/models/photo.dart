@@ -8,6 +8,7 @@ part 'photo.g.dart';
 class Photo{
   Photo();
 
+  @JsonKey(name: 'wb_url')
   late String? wbUrl;
   @JsonKey(name: 'pic_info')
   late PhotoInfo? picInfo;

@@ -14,14 +14,17 @@ class PhotoInfo{
   late PhotoLink? original;
   late PhotoLink? largest;
   late PhotoLink? mw2000;
+  late String? type;
 
   @JsonKey(name: 'object_id')
   late String? objectId;
+
   @JsonKey(name: 'photo_id')
   late String? photoId;
+
   @JsonKey(name: 'photo_tag')
   late int? photoTag;
-  late String? type;
+
   @JsonKey(name: 'pic_status')
   late int? picStatus;
 
