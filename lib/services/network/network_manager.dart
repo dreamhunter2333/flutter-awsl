@@ -14,7 +14,7 @@ class NetworkManager{
   NetworkManager._internal();
   //endregion
 
-  final String domain = 'http://awsl-py.dev.jcstaff.club';
+  final String domain = 'http://awsl-py.dev.jcstaff.club/';
 
   Map<String, dynamic> get headers{
     return {};
