@@ -9,7 +9,7 @@ class ListProducerRequest extends BaseRequest{
 
   @override
   @JsonKey(ignore:true)
-  String get api => super.api;
+  String get api => 'producers';
 
   @override
   Map<String, dynamic> toJson() => _$ListProducerRequestToJson(this);

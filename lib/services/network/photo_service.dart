@@ -14,7 +14,7 @@ class PhotoService extends NetworkService{
 
     return NetworkManager.shared.request(request, 'GET').then((json){
       ListPhotoResponse response = ListPhotoResponse.fromJson(json);
-      List<Photo> photos = response.photos;
+      List<Photo> photos = response.photos!;
 
       return photos;
     });

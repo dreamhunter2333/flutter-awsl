@@ -9,7 +9,7 @@ class ListProducerResponse extends BaseResponse{
   ListProducerResponse();
 
   @JsonKey(name: 'results')
-  late List<Producer> producers;
+  List<Producer>? producers;
 
   factory ListProducerResponse.fromJson(Map<String, dynamic> json) => _$ListProducerResponseFromJson(json);
 }

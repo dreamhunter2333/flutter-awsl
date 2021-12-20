@@ -9,10 +9,11 @@ class PhotoListState extends Equatable{
     required this.nextLoadPage
   });
 
+  final Producer? producer;
+
   List<Photo> get photos => currentPhotos ?? [];
   final List<Photo>? currentPhotos;
 
-  final Producer? producer;
   final int nextLoadPage;
 
   @override
@@ -23,12 +24,11 @@ class PhotoListStateInitial extends PhotoListState{
   const PhotoListStateInitial({
     Producer? producer,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos,
     int nextLoadPage = 0
   }): super(
     producer: producer,
-    nextLoadPage: nextLoadPage,
-    currentPhotos: currentPhotos
+    currentPhotos: currentPhotos,
+    nextLoadPage: nextLoadPage
   );
 
   @override
@@ -39,25 +39,23 @@ class PhotoListStateLoadMoreInProgress extends PhotoListState {
   const PhotoListStateLoadMoreInProgress({
     Producer? producer,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos,
     int nextLoadPage = 0
   }): super(
       producer: producer,
-      nextLoadPage: nextLoadPage,
-      currentPhotos: currentPhotos
+      currentPhotos: currentPhotos,
+      nextLoadPage: nextLoadPage
   );
 
   PhotoListStateLoadMoreInProgress.fromState(PhotoListState state,
       {
         Producer? producer,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos,
-        int nextLoadPage = 0
+        int? nextLoadPage
       })
       : this(
-      producer: state.producer,
-      nextLoadPage: state.nextLoadPage,
-      currentPhotos: state.currentPhotos
+      producer: producer ?? state.producer,
+      currentPhotos: currentPhotos ?? state.currentPhotos,
+      nextLoadPage: nextLoadPage ?? state.nextLoadPage,
   );
 
   @override
@@ -72,21 +70,21 @@ class PhotoListStateReloadInProgress extends PhotoListState {
     int nextLoadPage = 0
   }): super(
       producer: producer,
-      nextLoadPage: nextLoadPage,
-      currentPhotos: currentPhotos
+      currentPhotos: currentPhotos,
+      nextLoadPage: nextLoadPage
   );
 
   PhotoListStateReloadInProgress.fromState(PhotoListState state,
       {
         Producer? producer,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos,
-        int nextLoadPage = 0
+        int? nextLoadPage
       })
       : this(
-      producer: state.producer,
-      nextLoadPage: state.nextLoadPage,
-      currentPhotos: state.currentPhotos
+      producer: producer ?? state.producer,
+      currentPhotos: currentPhotos ?? state.currentPhotos,
+      nextLoadPage: nextLoadPage ?? state.nextLoadPage
+
   );
 
   @override
@@ -97,25 +95,23 @@ class PhotoListStateLoadSuccess extends PhotoListState {
   const PhotoListStateLoadSuccess({
     Producer? producer,
     List<Photo>? currentPhotos,
-    List<Photo>? emptyPhotos,
     int nextLoadPage = 0
   }): super(
       producer: producer,
+      currentPhotos: currentPhotos,
       nextLoadPage: nextLoadPage,
-      currentPhotos: currentPhotos
   );
 
   PhotoListStateLoadSuccess.fromState(PhotoListState state,
       {
         Producer? producer,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos,
-        int nextLoadPage = 0
+        int? nextLoadPage
       })
       : this(
-      producer: state.producer,
-      nextLoadPage: state.nextLoadPage,
-      currentPhotos: state.currentPhotos
+      producer: producer ?? state.producer,
+      currentPhotos: currentPhotos ?? state.currentPhotos,
+      nextLoadPage: nextLoadPage ?? state.nextLoadPage,
   );
 
   @override
@@ -138,13 +134,12 @@ class PhotoListStateLoadFailure extends PhotoListState {
       {
         Producer? producer,
         List<Photo>? currentPhotos,
-        List<Photo>? emptyPhotos,
-        int nextLoadPage = 0
+        int? nextLoadPage
       })
       : this(
-      producer: state.producer,
-      nextLoadPage: state.nextLoadPage,
-      currentPhotos: state.currentPhotos
+      producer: producer ?? state.producer,
+      currentPhotos: currentPhotos ?? state.currentPhotos,
+      nextLoadPage: nextLoadPage ?? state.nextLoadPage,
   );
 
   @override

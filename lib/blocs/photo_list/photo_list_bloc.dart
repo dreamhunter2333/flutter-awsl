@@ -59,9 +59,13 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
   void _onProducerUidChanged(PhotoListProducerUidChanged event, Emitter<PhotoListState> emit) async{
 
+    if (event.producer.uid == null){
+      return;
+    }
+
     PhotoService photoService = findService(PhotoService);
 
-    String uid = event.producer.uid;
+    String uid = event.producer.uid!;
     int nextLoadPage = 1;
 
     emit(PhotoListStateLoadMoreInProgress.fromState(state));

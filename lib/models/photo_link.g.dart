@@ -11,7 +11,7 @@ PhotoLink _$PhotoLinkFromJson(Map<String, dynamic> json) => PhotoLink()
   ..width = json['width'] as int?
   ..height = json['height'] as int?
   ..type = json['type'] as String?
-  ..cutType = json['cut_type'] as String?;
+  ..cutType = json['cut_type'] as int?;
 
 Map<String, dynamic> _$PhotoLinkToJson(PhotoLink instance) => <String, dynamic>{
       'url': instance.url,

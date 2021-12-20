@@ -6,10 +6,10 @@ part 'focus_point.g.dart';
 class FocusPoint{
   FocusPoint();
 
-  late double? left;
-  late double? top;
-  late double? width;
-  late double? height;
+  double? left;
+  double? top;
+  double? width;
+  double? height;
 
   factory FocusPoint.fromJson(Map<String, dynamic> json) => _$FocusPointFromJson(json);
   Map<String, dynamic> toJson() => _$FocusPointToJson(this);

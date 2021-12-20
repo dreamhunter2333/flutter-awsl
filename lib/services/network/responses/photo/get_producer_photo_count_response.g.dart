@@ -8,7 +8,7 @@ part of 'get_producer_photo_count_response.dart';
 
 GetProducerPhotoCountResponse _$GetProducerPhotoCountResponseFromJson(
         Map<String, dynamic> json) =>
-    GetProducerPhotoCountResponse()..count = json['results'] as int;
+    GetProducerPhotoCountResponse()..count = json['results'] as int?;
 
 Map<String, dynamic> _$GetProducerPhotoCountResponseToJson(
         GetProducerPhotoCountResponse instance) =>

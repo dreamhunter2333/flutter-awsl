@@ -9,10 +9,10 @@ class GetProducerPhotoCountRequest extends BaseRequest{
 
   @override
   @JsonKey(ignore: true)
-  String get api => super.api;
+  String get api => 'list_count';
 
   @JsonKey(name: 'uid')
-  late String uid;
+  String? uid;
 
   @override
   Map<String, dynamic> toJson() => _$GetProducerPhotoCountRequestToJson(this);

@@ -8,7 +8,7 @@ class GetProducerPhotoCountResponse extends BaseResponse{
   GetProducerPhotoCountResponse();
 
   @JsonKey(name: 'results')
-  late int count;
+  int? count;
 
   factory GetProducerPhotoCountResponse.fromJson(Map<String, dynamic> json) => _$GetProducerPhotoCountResponseFromJson(json);
 }

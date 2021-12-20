@@ -9,7 +9,7 @@ class ListPhotoResponse extends BaseResponse{
   ListPhotoResponse();
 
   @JsonKey(name: 'results')
-  late List<Photo> photos;
+  List<Photo>? photos;
 
   factory ListPhotoResponse.fromJson(Map<String, dynamic> json) => _$ListPhotoResponseFromJson(json);
 }

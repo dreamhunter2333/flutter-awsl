@@ -13,7 +13,7 @@ class ProducerService extends NetworkService{
 
     return NetworkManager.shared.request(request, 'GET').then((json){
       ListProducerResponse response = ListProducerResponse.fromJson(json);
-      List<Producer> producers = response.producers;
+      List<Producer> producers = response.producers!;
 
       return producers;
     });
@@ -26,7 +26,7 @@ class ProducerService extends NetworkService{
 
     return NetworkManager.shared.request(request, 'GET').then((json){
       GetProducerPhotoCountResponse response = GetProducerPhotoCountResponse.fromJson(json);
-      int count = response.count;
+      int count = response.count!;
 
       return count;
     });

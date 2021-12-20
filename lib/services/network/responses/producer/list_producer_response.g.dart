@@ -9,8 +9,8 @@ part of 'list_producer_response.dart';
 ListProducerResponse _$ListProducerResponseFromJson(
         Map<String, dynamic> json) =>
     ListProducerResponse()
-      ..producers = (json['results'] as List<dynamic>)
-          .map((e) => Producer.fromJson(e as Map<String, dynamic>))
+      ..producers = (json['results'] as List<dynamic>?)
+          ?.map((e) => Producer.fromJson(e as Map<String, dynamic>))
           .toList();
 
 Map<String, dynamic> _$ListProducerResponseToJson(

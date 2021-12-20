@@ -8,7 +8,7 @@ part of 'get_producer_photo_count_request.dart';
 
 GetProducerPhotoCountRequest _$GetProducerPhotoCountRequestFromJson(
         Map<String, dynamic> json) =>
-    GetProducerPhotoCountRequest()..uid = json['uid'] as String;
+    GetProducerPhotoCountRequest()..uid = json['uid'] as String?;
 
 Map<String, dynamic> _$GetProducerPhotoCountRequestToJson(
         GetProducerPhotoCountRequest instance) =>

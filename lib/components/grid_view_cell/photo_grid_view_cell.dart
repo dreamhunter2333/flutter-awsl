@@ -13,12 +13,12 @@ class PhotoGridViewCell extends StatelessWidget {
     return Container(child: Stack(children: [
       Container(),
       (() {
-        if (photo.picInfo.large.url != null) {
+        if (photo.picInfo?.large?.url != null) {
           return CachedNetworkImage(
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.cover,
-            imageUrl: photo.picInfo.large.url!,
+            imageUrl: photo.picInfo!.large!.url!,
             errorWidget: (context, widget, error) => const Icon(Icons.error));
         }
         else{

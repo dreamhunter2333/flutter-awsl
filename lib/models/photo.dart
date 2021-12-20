@@ -9,9 +9,9 @@ class Photo{
   Photo();
 
   @JsonKey(name: 'wb_url')
-  late String? wbUrl;
+  String? wbUrl;
   @JsonKey(name: 'pic_info')
-  late PhotoInfo? picInfo;
+  PhotoInfo? picInfo;
 
   factory Photo.fromJson(Map<String, dynamic> json) => _$PhotoFromJson(json);
   Map<String, dynamic> toJson() => _$PhotoToJson(this);

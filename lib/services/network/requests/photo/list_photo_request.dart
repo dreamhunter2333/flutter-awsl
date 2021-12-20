@@ -9,14 +9,14 @@ class ListPhotoRequest extends BaseRequest{
 
   @override
   @JsonKey(ignore: true)
-  String get api => super.api;
+  String get api => 'list';
 
   @JsonKey(name: 'uid')
-  late String uid;
+  String? uid;
   @JsonKey(name: 'page')
-  late int page;
+  int? page;
   @JsonKey(name: 'limit')
-  late int limit;
+  int? limit;
 
   @override
   Map<String, dynamic> toJson() => _$ListPhotoRequestToJson(this);
