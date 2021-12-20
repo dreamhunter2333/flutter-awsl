@@ -7,12 +7,27 @@ class PhotoLink{
   PhotoLink();
 
   String? url;
-  int? width;
-  int? height;
   String? type;
 
   @JsonKey(name: 'cut_type')
   int? cutType;
+  @JsonKey(fromJson: _widthOrHeightFromJson)
+  int? width;
+  @JsonKey(fromJson: _widthOrHeightFromJson)
+  int? height;
+
+  static int? _widthOrHeightFromJson(dynamic width){
+    
+    if(width is String){
+      return int.parse(width);
+    }
+
+    if(width is int){
+      return width;
+    }
+
+    return null;
+  }
 
   factory PhotoLink.fromJson(Map<String, dynamic> json) => _$PhotoLinkFromJson(json);
   Map<String, dynamic> toJson() => _$PhotoLinkToJson(this);
