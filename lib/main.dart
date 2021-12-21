@@ -1,16 +1,10 @@
-import 'package:flutter/material.dart';
-
-import 'awsl/awsl.dart';
+import 'package:awsl/models/photo.dart';
+import 'package:awsl/screens/photo_list/photo_details_screen.dart';
+import 'package:awsl/screens/photo_list/photo_list_screen.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(const MyApp());
-}
-
-class Pair<T1, T2> {
-  final T1 t1;
-  final T2 t2;
-
-  Pair(this.t1, this.t2);
 }
 
 class MyApp extends StatelessWidget {
@@ -18,10 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return CupertinoApp(
       title: 'Awsl',
-      darkTheme: ThemeData.dark(),
-      home: const Awsl(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const PhotoListScreen(),
+        '/details': (context) => PhotoDetailsScreen(ModalRoute.of(context)?.settings.arguments as Photo)
+      },
     );
   }
 }
