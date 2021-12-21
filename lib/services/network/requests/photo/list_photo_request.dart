@@ -13,8 +13,8 @@ class ListPhotoRequest extends BaseRequest{
 
   @JsonKey(name: 'uid')
   String? uid;
-  @JsonKey(name: 'page')
-  int? page;
+  @JsonKey(name: 'offset')
+  int? offset;
   @JsonKey(name: 'limit')
   int? limit;
 

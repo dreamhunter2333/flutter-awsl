@@ -9,12 +9,12 @@ part of 'list_photo_request.dart';
 ListPhotoRequest _$ListPhotoRequestFromJson(Map<String, dynamic> json) =>
     ListPhotoRequest()
       ..uid = json['uid'] as String?
-      ..page = json['page'] as int?
+      ..offset = json['offset'] as int?
       ..limit = json['limit'] as int?;
 
 Map<String, dynamic> _$ListPhotoRequestToJson(ListPhotoRequest instance) =>
     <String, dynamic>{
       'uid': instance.uid,
-      'page': instance.page,
+      'offset': instance.offset,
       'limit': instance.limit,
     };

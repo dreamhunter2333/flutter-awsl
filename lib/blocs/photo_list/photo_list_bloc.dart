@@ -29,7 +29,7 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
     try {
       List<Photo> photos = await photoService.listPhotos(
-          uid: state.producer?.uid ?? '', page: nextLoadPage, limit: 10);
+          uid: state.producer?.uid ?? '', offset: nextLoadPage, limit: 10);
 
       emit(PhotoListStateLoadSuccess.fromState(state, currentPhotos: (state.currentPhotos ?? []) + photos, nextLoadPage: nextLoadPage + 1));
     }
@@ -48,7 +48,7 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
     try {
       List<Photo> photos = await photoService.listPhotos(
-          uid: state.producer?.uid ?? '', page: nextLoadPage, limit: 10);
+          uid: state.producer?.uid ?? '', offset: nextLoadPage, limit: 10);
 
       emit(PhotoListStateLoadSuccess.fromState(state, currentPhotos: photos, nextLoadPage: nextLoadPage + 1));
     }
@@ -68,7 +68,7 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
     try {
       List<Photo> photos = await photoService.listPhotos(
-          uid: uid, page: nextLoadPage, limit: 10);
+          uid: uid, offset: nextLoadPage, limit: 10);
 
       emit(PhotoListStateLoadSuccess.fromState(state, producer: event.producer , currentPhotos: photos, nextLoadPage: nextLoadPage + 1));
     }
