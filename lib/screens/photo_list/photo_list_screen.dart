@@ -32,15 +32,9 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return BlocProvider(
       create: (BuildContext context) {
-        Producer producer = Producer();
-        producer.uid = '5545966660';
-        producer.name = '写真博主';
-
-        PhotoListEvent event = PhotoListProducerUidChanged(producer: producer);
+        PhotoListEvent event = const PhotoListMoreLoaded();
         return PhotoListBloc()..add(event);
       },
       child: CupertinoPageScaffold(
@@ -50,7 +44,8 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
             if (state is PhotoListStateLoadSuccess) {
               _easyRefreshController.finishRefresh(success: true);
               _easyRefreshController.finishLoad(success: true);
-            } else if (state is PhotoListStateLoadFailure) {
+            }
+            else if (state is PhotoListStateLoadFailure) {
               _easyRefreshController.finishRefresh(success: false);
               _easyRefreshController.finishLoad(success: false);
             }

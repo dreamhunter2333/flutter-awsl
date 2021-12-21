@@ -29,7 +29,7 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
     try {
       List<Photo> photos = await photoService.listPhotos(
-          state.producer?.uid ?? 0, page: nextLoadPage, limit: 10);
+          uid: state.producer?.uid ?? '', page: nextLoadPage, limit: 10);
 
       emit(PhotoListStateLoadSuccess.fromState(state, currentPhotos: (state.currentPhotos ?? []) + photos, nextLoadPage: nextLoadPage + 1));
     }
@@ -48,9 +48,9 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
     try {
       List<Photo> photos = await photoService.listPhotos(
-          state.producer?.uid ?? 0, page: nextLoadPage, limit: 10);
+          uid: state.producer?.uid ?? '', page: nextLoadPage, limit: 10);
 
-      emit(PhotoListStateLoadSuccess.fromState(state, currentPhotos: (state.currentPhotos ?? []) + photos, nextLoadPage: nextLoadPage + 1));
+      emit(PhotoListStateLoadSuccess.fromState(state, currentPhotos: photos, nextLoadPage: nextLoadPage + 1));
     }
     catch (e){
       emit(PhotoListStateLoadFailure.fromState(state));
@@ -59,22 +59,18 @@ class PhotoListBloc extends BaseBloc<PhotoListEvent, PhotoListState>{
 
   void _onProducerUidChanged(PhotoListProducerUidChanged event, Emitter<PhotoListState> emit) async{
 
-    if (event.producer?.uid == null){
-      return;
-    }
-
     PhotoService photoService = findService(PhotoService);
 
-    String uid = event.producer!.uid!;
+    String uid = event.producer?.uid ?? '';
     int nextLoadPage = 1;
 
     emit(PhotoListStateLoadMoreInProgress.fromState(state));
 
     try {
       List<Photo> photos = await photoService.listPhotos(
-          uid, page: nextLoadPage, limit: 10);
+          uid: uid, page: nextLoadPage, limit: 10);
 
-      emit(PhotoListStateLoadSuccess.fromState(state, producer: event.producer , currentPhotos: (state.currentPhotos ?? []) + photos, nextLoadPage: nextLoadPage + 1));
+      emit(PhotoListStateLoadSuccess.fromState(state, producer: event.producer , currentPhotos: photos, nextLoadPage: nextLoadPage + 1));
     }
     catch (e){
       emit(PhotoListStateLoadFailure.fromState(state));

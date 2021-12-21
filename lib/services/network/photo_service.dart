@@ -6,7 +6,7 @@ import 'package:awsl/services/network/responses/photo/list_photo_response.dart';
 
 class PhotoService extends NetworkService{
 
-  Future<List<Photo>> listPhotos(uid, {page = 1, limit = 10}){
+  Future<List<Photo>> listPhotos({String uid = '', page = 1, limit = 10}){
     ListPhotoRequest request = ListPhotoRequest();
     request.uid = uid;
     request.page = page;

@@ -18,7 +18,7 @@ class PhotoListProducerUidChanged extends PhotoListEvent{
 }
 
 class PhotoListMoreLoaded extends PhotoListEvent{
-  const PhotoListMoreLoaded({required this.producer});
+  const PhotoListMoreLoaded({this.producer});
 
   final Producer? producer;
 
@@ -27,7 +27,7 @@ class PhotoListMoreLoaded extends PhotoListEvent{
 }
 
 class PhotoListReloaded extends PhotoListEvent{
-  const PhotoListReloaded({required this.producer});
+  const PhotoListReloaded({this.producer});
 
   final Producer? producer;
 

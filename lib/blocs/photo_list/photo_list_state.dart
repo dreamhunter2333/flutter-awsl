@@ -32,7 +32,7 @@ class PhotoListStateInitial extends PhotoListState{
   );
 
   @override
-  List<Photo> get photos => (currentPhotos ?? []) + List.filled(10, Photo());
+  List<Photo> get photos => (currentPhotos ?? []);
 }
 
 class PhotoListStateLoadMoreInProgress extends PhotoListState {
