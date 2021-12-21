@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:awsl/screens/photo_list/photo_list_screen.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'awsl/awsl.dart';
 
@@ -18,10 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const CupertinoApp(
       title: 'Awsl',
-      darkTheme: ThemeData.dark(),
-      home: const Awsl(),
+      home: PhotoListScreen(),
     );
   }
 }

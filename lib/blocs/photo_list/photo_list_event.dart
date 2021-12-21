@@ -11,16 +11,26 @@ abstract class PhotoListEvent extends Equatable{
 class PhotoListProducerUidChanged extends PhotoListEvent{
   const PhotoListProducerUidChanged({required this.producer});
 
-  final Producer producer;
+  final Producer? producer;
 
   @override
-  List<Object?> get props => [super.props];
+  List<Object?> get props => [producer?.uid ?? ''];
 }
 
 class PhotoListMoreLoaded extends PhotoListEvent{
-  const PhotoListMoreLoaded();
+  const PhotoListMoreLoaded({required this.producer});
+
+  final Producer? producer;
+
+  @override
+  List<Object?> get props => [producer?.uid ?? ''];
 }
 
 class PhotoListReloaded extends PhotoListEvent{
-  const PhotoListReloaded();
+  const PhotoListReloaded({required this.producer});
+
+  final Producer? producer;
+
+  @override
+  List<Object?> get props => [producer?.uid ?? ''];
 }

@@ -72,10 +72,10 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
                 enableControlFinishRefresh: true,
                 enableControlFinishLoad: true,
                 onRefresh: () async {
-                  BlocProvider.of<PhotoListBloc>(context).add(const PhotoListReloaded(producer: state.producer));
+                  BlocProvider.of<PhotoListBloc>(context).add(PhotoListReloaded(producer: state.producer));
                 },
                 onLoad: () async {
-                  BlocProvider.of<PhotoListBloc>(context).add(const PhotoListMoreLoaded());
+                  BlocProvider.of<PhotoListBloc>(context).add(PhotoListMoreLoaded(producer: state.producer));
                 },
                 child: MasonryGridView.count(
                     controller: _scrollController,
