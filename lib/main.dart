@@ -1,3 +1,5 @@
+import 'package:awsl/models/photo.dart';
+import 'package:awsl/screens/photo_list/photo_details_screen.dart';
 import 'package:awsl/screens/photo_list/photo_list_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,9 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return CupertinoApp(
       title: 'Awsl',
-      home: PhotoListScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const PhotoListScreen(),
+        '/details': (context) => PhotoDetailsScreen(ModalRoute.of(context)?.settings.arguments as Photo)
+      },
     );
   }
 }
