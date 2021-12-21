@@ -37,7 +37,7 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
     return BlocProvider(
       create: (BuildContext context) {
         Producer producer = Producer();
-        producer.uid = '6421601178';
+        producer.uid = '5545966660';
         producer.name = '写真博主';
 
         PhotoListEvent event = PhotoListProducerUidChanged(producer: producer);
@@ -46,6 +46,7 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
       child: CupertinoPageScaffold(
         child: SafeArea(child: BlocBuilder<PhotoListBloc, PhotoListState>(
           builder: (context, state) {
+
             if (state is PhotoListStateLoadSuccess) {
               _easyRefreshController.finishRefresh(success: true);
               _easyRefreshController.finishLoad(success: true);
@@ -70,11 +71,18 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
                 controller: _easyRefreshController,
                 enableControlFinishRefresh: true,
                 enableControlFinishLoad: true,
-                onRefresh: () async {},
-                onLoad: () async {},
-                child: StaggeredGridView.countBuilder(
+                onRefresh: () async {
+                  BlocProvider.of<PhotoListBloc>(context).add(const PhotoListReloaded(producer: state.producer));
+                },
+                onLoad: () async {
+                  BlocProvider.of<PhotoListBloc>(context).add(const PhotoListMoreLoaded());
+                },
+                child: MasonryGridView.count(
                     controller: _scrollController,
                     crossAxisCount: 2,
+                    crossAxisSpacing: 5.0,
+                    mainAxisSpacing: 5.0,
+                    padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                     itemCount: state.photos.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
@@ -84,8 +92,6 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
                         ),
                       );
                     },
-                    staggeredTileBuilder: (int index) =>
-                        StaggeredTile.count(index % 4 == 0 || index % 4 == 3 ? 2 : 1, 1.5)
                 )
         )
       )

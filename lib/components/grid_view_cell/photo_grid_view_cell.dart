@@ -10,22 +10,34 @@ class PhotoGridViewCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Stack(children: [
-      Container(),
-      (() {
-        if (photo.picInfo?.large?.url != null) {
-          return CachedNetworkImage(
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-            imageUrl: photo.picInfo!.large!.url!,
-            errorWidget: (context, widget, error) => const Icon(Icons.error));
-        }
-        else{
-          return Container();
-        }
-      }())
-    ],),);
+    return Container(
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.0),
+            child: Stack(children: [
+              // Container(
+              //     alignment: Alignment.center,
+              //     child: Image(
+              //       image: AssetImage('logo.png'),
+              //       width: 30.0,
+              //       height: 30.0,
+              //     )
+              // ),
+              (() {
+                if (photo.picInfo?.large?.url != null) {
+                  return CachedNetworkImage(
+                      // width: double.infinity,
+                      // height: double.infinity,
+                      fit: BoxFit.fitWidth,
+                      imageUrl: photo.picInfo!.large!.url!,
+                      errorWidget: (context, widget, error) =>
+                          const Icon(Icons.error));
+                } else {
+                  return Container();
+                }
+              }())
+            ]
+            )
+        )
+    );
   }
-
 }
