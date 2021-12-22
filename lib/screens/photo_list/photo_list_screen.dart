@@ -81,7 +81,9 @@ class _PhotoListScreenState extends BaseWidgetState<PhotoListScreen> {
                     itemCount: state.photos.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTapUp: (TapUpDetails details) {},
+                        onTapUp: (TapUpDetails details) {
+                          Navigator.pushNamed(context, '/details', arguments:state.photos[index]);
+                        },
                         child: PhotoGridViewCell(
                           photo: state.photos[index],
                         ),
